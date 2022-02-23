@@ -1,0 +1,15 @@
+# 导出数据
+    # 在原数据库导出时加了--set-gtid-purged=OFF，导入新数据库时，才会触发记录到新数据库的binlog日志。如果不加，则新数据库不记录binlog日志。
+    # --no-create-db 不创建db数据库
+    # -R 导出存储过程以及自定义函数
+mysqldump -h 127.0.0.1 -u 账号 -p密码 --set-gtid-purged=OFF --no-create-db -R demo > demo.sql
+
+    # 显示耗时
+time mysqldump -h 127.0.0.1 -u账号 -p密码 --set-gtid-purged=OFF --no-create-db -R demo > demo.sql
+
+# 导入数据
+    # demo 指定导入demo库
+mysql -h 127.0.0.1 -u 账号 -p密码  demo < demo.sql
+
+    # 显示耗时
+time mysql -h 127.0.0.1 -u 账号 -p密码  demo < demo.sql   
