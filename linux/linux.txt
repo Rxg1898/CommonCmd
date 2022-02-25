@@ -1,0 +1,2 @@
+# 修改服务器时区为UTC-0时区
+ln -sf /usr/share/zoneinfo/UTC /etc/localtime
