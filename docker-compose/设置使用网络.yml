@@ -1,0 +1,24 @@
+version: '3'
+services:
+  demo1:
+    xxx
+  demo2:
+    restart: always
+    container_name: demo2
+    image: demo 
+    environment:
+      - TZ=UTC
+    # 依赖哪个服务才能启动
+    depends_on:
+      - demo1
+    networks:
+      - demo
+
+networks:
+  demo:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet:  10.255.0.0/16
+
