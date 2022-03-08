@@ -10,3 +10,5 @@
 - [docker](./docker)
 - [docker-compose](./docker-compose)
 
+- [k8s各种yaml文件](./k8s/kubernetes-yaml/README.md)
+
