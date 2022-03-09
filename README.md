@@ -1,6 +1,7 @@
 # 常用命令汇总
 - [k8s常用命令](./k8s/k8s常用命令.txt)
 - [mysql常用命令](./mysql/mysql.txt)
+- [saltstack常用命令](./saltstack/saltstack.md)
 - [Linux常用命令](./linux/linux.txt)
 
 
