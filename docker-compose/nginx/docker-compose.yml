@@ -1,0 +1,16 @@
+version: '3'
+services:
+  nginx:
+    container_name: nginx
+    image: nginx:1.13.3-alpine
+    # image: arquivei/nginx-vts:1.19.9 
+    restart: always
+    ports:
+      - "888:888"
+      # - "443:443"
+    volumes:
+      - "./nginx.conf:/etc/nginx/nginx.conf"
+      - "./conf.d:/etc/nginx/conf.d"
+      - "./html:/usr/share/nginx/html"
+
+
