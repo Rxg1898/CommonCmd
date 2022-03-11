@@ -85,3 +85,11 @@ show processlist;
 kill 会话ID
 ```
 
+
+
+## 6、建库
+
+```
+CREATE DATABASE `demo` CHARACTER SET utf8;
+```
+
