@@ -93,3 +93,13 @@ kill 会话ID
 CREATE DATABASE `demo` CHARACTER SET utf8;
 ```
 
+
+
+## 7、删除数据
+
+### 清空表
+
+```
+TRUNCATE TABLE `demo`;
+```
+
