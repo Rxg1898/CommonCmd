@@ -327,7 +327,7 @@ net.ipv4.tcp_abort_on_overflow
 net.ipv4.tcp_syncookies = 1
 ```
 
-- ## 设置worker进程最大连接数量
+- 设置worker进程最大连接数量
 
 ```
 worker_connections number; // 默认512
@@ -392,5 +392,23 @@ postpone_output size; // 默认1460
 
 ```
 tcp_nopush on|off; // 默认off开启
+```
+
+- 发送心跳周期
+
+```
+net.ipv4.tcp_keepalive_time=7200 // 秒
+```
+
+- 探测包发送间隔
+
+```
+net.ipv4.tcp_keepalive_intvl=75
+```
+
+- 探测包重试次数
+
+```
+net.ipv4.tcp_keepalive_probes=9
 ```
 
