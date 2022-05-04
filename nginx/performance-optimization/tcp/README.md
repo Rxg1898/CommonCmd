@@ -189,6 +189,113 @@ Nginx的tcp keepalive：
 - so_keepalive=30m::10
 - Keepidlea,keepintvl,keepcnt
 
+### time_wait状态
+
+#### 被动关闭连接
+
+查看连接状态，State字段
+
+```
+netstat -ant
+或者ss -ant
+```
+
+- 存在大量CLOSE_WAIT状态：应用进程没有及时响应对端关闭连接
+- 存在大量LAST_ACK状态：等待接收主动关闭端操作系统发来的针对FIN的ACK报文
+
+
+
+#### 主动关闭连接
+
+fin_wait1状态和fin_wait2状态
+
+- fin_wait1状态，发送FIN报文的重试次数，0相当于8
+
+```
+net.ipv4.tcp_orphan_retries=0
+```
+
+- fin_wait2状态，保持在FIN_WAIT_2状态的时间
+
+```
+net.ipv4.tcp_fin_timeout=60
+```
+
+#### time_wait状态有什么用？
+
+time_wait存在的2个原因：
+
+1. 可靠地终止TCP连接
+2. 保证让迟来的TCP报文段有足够的时间被识别并丢弃
+
+MSL(Maximum Segment Lifetime)报文最大生存时间,tcp报文生存周期1MSL，2MSL是为了确保网络上的tcp报文已经无了。所以维持TIME_WAIT状态的时长是2MSL，保证至少一次报文的往返时间内端口是不可复用。
+
+
+
+#### time_wait优化
+
+- 开启后，作为客户端时新连接可以使用仍然处于time_wait状态端口
+
+```
+net.ipv4.tcp_tw_reuse=1
+```
+
+- 由于timestamp的存在，操作系统可以拒绝迟到的报文
+
+```
+net,ipv4.tcp_timestamps=1
+```
+
+- 开启后，同时作为客户端和服务器都可以使用time_wait状态的端口，不安全，无法避免报文延迟、重复等给新连接造成混乱
+
+```
+net.ipv4.tcp_tw_recycle=0
+```
+
+- Time_wait状态连接的最大数量，超出后直接关闭连接
+
+```
+net.ipv4.tcp_max_tw_buckets=262144
+```
+
+
+
+### lingering_close延迟关闭
+
+意义：当Nginx处理完成调用close关闭连接后，若接收缓冲区仍然收到客户端发来的内容，则服务器会向客户端发送RST包关闭连接，导致客户端由于收到RST而忽略了http response
+
+Nginx配置：
+
+- off 关闭功能
+- on由Nginx判断，当用户请求未接收完(根据chunk或者Content-Length头部等)时启用功能，否则及时关闭连接
+- always无条件启用功能
+
+```
+lingering_close off|on|always; // 默认on
+```
+
+- 当功能启用时，最长的读取用户请求内容的时长，达到后立刻关闭连接
+
+```
+lingering_time time; //默认30s
+```
+
+- 当功能启用时，检测客户端是否仍然请求内容到达，若超时后仍没有数据达到，则立刻关闭连接
+
+```
+lingering_timeout time; //默认5s
+```
+
+### RST代替正常四次挥手关闭连接
+
+- 当读、写超时指令生效引发连接关闭时产生的异常，通过发送RST立刻释放端口、内存等资源来关闭连接
+
+```
+reset_timedout_connection on|off; // 默认off
+```
+
+
+
 ## SYN攻击
 
 什么是SYN攻击：攻击者短时间伪造不同IP地址的SYN报文，快速占满backlog队列，使服务器不能为正常用户服务
@@ -410,5 +517,67 @@ net.ipv4.tcp_keepalive_intvl=75
 
 ```
 net.ipv4.tcp_keepalive_probes=9
+```
+
+- fin_wait1状态，发送FIN报文的重试次数，0相当于8
+
+```
+net.ipv4.tcp_orphan_retries=0
+```
+
+- fin_wait2状态，保持在FIN_WAIT_2状态的时间
+
+```
+net.ipv4.tcp_fin_timeout=60
+```
+
+- 开启后，作为客户端时新连接可以使用仍然处于time_wait状态端口
+
+```
+net.ipv4.tcp_tw_reuse=1
+```
+
+- 由于timestamp的存在，操作系统可以拒绝迟到的报文
+
+```
+net,ipv4.tcp_timestamps=1
+```
+
+- 开启后，同时作为客户端和服务器都可以使用time_wait状态的端口，不安全，无法避免报文延迟、重复等给新连接造成混乱
+
+```
+net.ipv4.tcp_tw_recycle=0
+```
+
+- Time_wait状态连接的最大数量，超出后直接关闭连接
+
+```
+net.ipv4.tcp_max_tw_buckets=262144
+```
+
+- off 关闭功能
+- on由Nginx判断，当用户请求未接收完(根据chunk或者Content-Length头部等)时启用功能，否则及时关闭连接
+- always无条件启用功能
+
+```
+lingering_close off|on|always; // 默认on
+```
+
+- 当功能启用时，最长的读取用户请求内容的时长，达到后立刻关闭连接
+
+```
+lingering_time time; //默认30s
+```
+
+- 当功能启用时，检测客户端是否仍然请求内容到达，若超时后仍没有数据达到，则立刻关闭连接
+
+```
+lingering_timeout time; //默认5s
+```
+
+- 当读写超时指令生效引发连接关闭时，通过发送RST立刻释放端口、内存等资源来关闭连接
+
+```
+reset_timedout_connection on|off; // 默认off
 ```
 
