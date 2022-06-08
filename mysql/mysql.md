@@ -140,3 +140,37 @@ LOCK=SHARED：共享锁：Online DDL操作期间堵塞写入，不影响读取
 LOCK=EXCLUSIVE：排它锁：Online DDL操作期间不允许对锁表进行任何操作
 ```
 
+## 9、查看当前数据库设置的最大连接数
+
+`show variables like '%max_connection%';`
+
+```
+mysql> show variables like '%max_connection%';
+
++-----------------+-------+
+| Variable_name   | Value |
++-----------------+-------+
+| max_connections | 6000  |
++-----------------+-------+
+1 row in set (0.00 sec)
+
+```
+
+## 10、查看当前连接数
+
+`show status like 'Threads%';`
+
+```
+mysql> show status like 'Threads%';
++-------------------+--------+
+| Variable_name     | Value  |
++-------------------+--------+
+| Threads_cached    | 33     |
+| Threads_connected | 4185   |
+| Threads_created   | 795017 |
+| Threads_running   | 3      |
++-------------------+--------+
+4 rows in set (0.02 sec)
+
+```
+

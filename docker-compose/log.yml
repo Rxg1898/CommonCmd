@@ -1,0 +1,29 @@
+version: '3'
+services:
+  demo1:
+    xxx
+  demo2:
+    ############关键logging配置部分############
+    logging:
+      driver: json-file
+      options:
+        max-file: '5'
+        max-size: 100m
+    restart: always
+    container_name: demo2
+    image: demo 
+    environment:
+      - TZ=UTC
+    depends_on:
+      - demo1
+    networks:
+      - demo
+
+networks:
+  demo:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet:  10.255.0.0/16
+
