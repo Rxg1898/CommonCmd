@@ -144,7 +144,7 @@ LOCK=EXCLUSIVE：排它锁：Online DDL操作期间不允许对锁表进行任�
 
 `show variables like '%max_connection%';`
 
-```
+```sql
 mysql> show variables like '%max_connection%';
 
 +-----------------+-------+
@@ -160,7 +160,7 @@ mysql> show variables like '%max_connection%';
 
 `show status like 'Threads%';`
 
-```
+```sql
 mysql> show status like 'Threads%';
 +-------------------+--------+
 | Variable_name     | Value  |
@@ -172,5 +172,22 @@ mysql> show status like 'Threads%';
 +-------------------+--------+
 4 rows in set (0.02 sec)
 
+```
+
+## 11、concat拼接kill 用户的会话进程，释放连接数
+
+```sql
+mysql>select concat('KILL ',id,';') from information_schema.processlist where user='root' into outfile '/tmp/2022.sql';
+
+
+mysql>source /tmp/2022.sql;
+```
+
+## 12、临时修改变量值-示例wait_timeout
+
+```sql
+mysql>show global variables like ‘wait_timeout’;
+
+mysql>set global wait_timeout=120;
 ```
 

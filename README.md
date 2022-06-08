@@ -4,6 +4,7 @@
 - [docker常用命令](./docker/README.md)
 - [mysql常用命令](./mysql/mysql.md)
 - [mongodb常用命令](./mongodb/mongodb.md)
+- [elasticsearch常用命令](./elasticsearch/README.md)
 - [saltstack常用命令](./saltstack/saltstack.md)
 - [Linux常用命令](./linux/linux.md)
 
