@@ -191,3 +191,14 @@ mysql>show global variables like ‘wait_timeout’;
 mysql>set global wait_timeout=120;
 ```
 
+### 12.1 修改wait_timeout不生效
+
+- 如果使用`show variables like 'wait_timeout';`，查询的是会话变量。然后使用了`set global wait_timeout=120;`修改全局变量，应该使用`show global variables like 'wait_timeout`。这样就可以看到变化了
+- interactive_timeout和wait_timeout的值都是86400(24小时)，当两个参数同时出现时值以interactive_timeout为准，所以使用以下操作可以达到修改wait_timeout的效果：
+
+```sql
+set global interactive_timeout=120;
+exit
+再登录查show variables like 'wait_timeout';
+```
+
