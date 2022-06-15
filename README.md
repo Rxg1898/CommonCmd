@@ -20,5 +20,6 @@
 # 知识点
 
 - [go](./go/README.md)
+- [python](./python/README.md)
 - [nginx](./nginx/README.md)
 - [traefik](./traefik/README.md)
