@@ -39,7 +39,7 @@ timestamp(claims["exp"]) < now
 
 基于原语的声明被 CEL 类型检查器使用，以确保表达式中的所有标识符和函数引用被正确声明和使用。
 ## 2.5 解析表达式
-处理一个表达式有三个阶段：`解析`、`检查`和`评估`。CEL最常见的模式是控制平面在配置时对表达式进行解析和检查，并存储AST。<br />![image.png](https://cdn.nlark.com/yuque/0/2022/png/2579230/1655376815539-90fe68f5-a3c6-441b-a564-ec3fcad92f8d.png)<br />在运行时，数据平面反复检索和评估AST。CEL对运行时的效率进行了优化，但`解析和检查不应该在延迟关键的代码路径中进行`。<br />![image.png](https://cdn.nlark.com/yuque/0/2022/png/2579230/1655376871943-425d8117-73e8-4bf3-bf95-60dd1ae12cf9.png)
+处理一个表达式有三个阶段：`解析`、`检查`和`评估`。CEL最常见的模式是控制平面在配置时对表达式进行解析和检查，并存储AST。<br />![](https://cdn.nlark.com/yuque/0/2022/png/2579230/1655376815539-90fe68f5-a3c6-441b-a564-ec3fcad92f8d.png)<br />在运行时，数据平面反复检索和评估AST。CEL对运行时的效率进行了优化，但`解析和检查不应该在延迟关键的代码路径中进行`。<br />![](https://cdn.nlark.com/yuque/0/2022/png/2579230/1655376871943-425d8117-73e8-4bf3-bf95-60dd1ae12cf9.png)
 
 
 使用 [ANTLR](https://www.antlr.org/)词典/解析器(Lexer/Parser)语法将CEL从人类可读的表达式解析为抽象的语法树。解析阶段发出一个基于`proto`的抽象语法树，其中AST中的每个Expr节点都包含一个整数ID，用于解析和检查期间产生的元数据。在解析过程中产生的  [syntax.proto](https://github.com/googleapis/googleapis/blob/master/google/api/expr/v1alpha1/syntax.proto) 忠实地代表了表达式的字符串形式中输入内容的抽象表示。
