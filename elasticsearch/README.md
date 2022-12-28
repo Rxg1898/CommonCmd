@@ -95,7 +95,22 @@ PUT /_cluster/settings
 }
 ```
 
+# 7、处理只读保护
 
+报错内容`blocked by: [FORBIDDEN/12/index read-only / allow delete (api)`
+
+将所有索引的读保护设置为`false`
+
+```shell
+PUT /_all/_settings
+{
+  "index": {
+    "blocks": {
+      "read_only_allow_delete": "false"
+    }
+  }
+}
+```
 
 
 
