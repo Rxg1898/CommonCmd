@@ -89,6 +89,7 @@ PUT /_cluster/settings
     "transient" : {
         "cluster.routing.allocation.disk.watermark.low" : "85%",
         "cluster.routing.allocation.disk.watermark.high" : "90%",
+        "cluster.routing.allocation.disk.watermark.flood_stage" : "95%",
         "cluster.info.update.interval" : "30s"
     }
 }
