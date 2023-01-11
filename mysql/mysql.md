@@ -202,3 +202,31 @@ exit
 再登录查show variables like 'wait_timeout';
 ```
 
+## 13、批量替换表中某个字符串
+
+- 使用`REPLACE`函数
+
+```mysql
+# 测试
+SELECT REPLACE('www.baidu.com', 'www', 'https://www');
++------------------------------------------------+
+| REPLACE('www.baidu.com', 'www', 'https://www') |
++------------------------------------------------+
+| https://www.baidu.com                          |
++------------------------------------------------+
+
+参数1: 原文
+参数2: 需要替换的字符
+参数3: 替换成的字符
+```
+
+```mysql
+UPDATE `table_name` SET `field_name` = replace (`field_name`,'from_str','to_str') WHERE `field_name` LIKE '%from_str%';
+
+说明:
+table_name: 表的名字
+field_name: 字段名
+from_str: 需要替换的字符
+to_str: 替换成的字符
+```
+
